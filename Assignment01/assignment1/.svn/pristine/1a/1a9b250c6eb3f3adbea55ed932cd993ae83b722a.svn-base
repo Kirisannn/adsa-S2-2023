@@ -93,9 +93,11 @@ vector<int> schoolMultiplication(vector<int> x1, vector<int> x2, int base, size_
     return product;
 };
 
-vector<int> karatsuba(vector<int> x1, vector<int> x2, int base, size_t n1, size_t n2, size_t n) {
-    vector<int> karatsubaProduct;
-    return karatsubaProduct;
+void karatsuba(vector<int> x1, vector<int> x2, int base, size_t n1, size_t n2, size_t n) {
+    string prodString = "0";
+    cout << prodString << " ";
+
+    return;
 };
 
 int main() {
@@ -145,10 +147,13 @@ int main() {
     string sumString = makeString(sum);
     cout << sumString << " ";
 
-    // vector<int> product = schoolMultiplication(x1, x2, base, n1, n2, n);  // School Multiplication
-    vector<int> product = karatsuba(x1, x2, base, n1, n2, n);  // Karatsuba Multiplication
+    // School Multiplication
+    vector<int> product = schoolMultiplication(x1, x2, base, n1, n2, n);
     string prodString = makeString(product);
     cout << prodString << " ";
+
+    // Karatsuba
+    // karatsuba(x1, x2, base, n1, n2, n);
 
     cout << "0" << endl;
 

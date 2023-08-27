@@ -1,0 +1,165 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+template <typename T>
+void printVector(vector<T> v) {
+    cout << "{ ";
+    for (size_t i = 0; i < v.size(); i++) {
+        cout << v[i] << " ";
+    }
+    cout << "}" << endl;
+
+    return;
+}
+
+string schoolAddition(string I1, string I2, string B) {
+    string sum;
+    size_t base = stoi(B);
+
+    size_t n1 = I1.length(), n2 = I2.length(), n;
+    int longerInt;
+    if (n1 >= n2) {
+        n = n1;
+        longerInt = 1;
+    } else if (n2 > n1) {
+        n = n2;
+        longerInt = 2;
+    }
+
+    // x1 is for the larger & x2 for the smaller interger.
+    vector<int> x1, x2, carries, sumInt;
+    // Zero x1, x2, carries & sumInt
+    for (size_t i = 0; i < n; i++) {
+        x1.push_back(0);
+        x2.push_back(0);
+        carries.push_back(0);
+        sumInt.push_back(0);
+        if (i == n - 1) {
+            carries.push_back(0);
+            sumInt.push_back(0);
+        }
+    }
+
+    {  // Print out empty vectors to check if zero'd correctly.
+        cout << endl;
+        cout << "Empty Vectors" << endl
+             << "==========================" << endl;
+        cout << "x1: ";
+        printVector(x1);
+        cout << "x2: ";
+        printVector(x2);
+        cout << "carries: ";
+        printVector(carries);
+        cout << "sumInt: ";
+        printVector(sumInt);
+        cout << "==========================" << endl;
+    }
+
+    if (longerInt == 1) {  // If I1 is longer
+        // Add I1 normally into x1
+        for (size_t i = 0; i < n; i++) {
+            x1[i] = stoi(I1.substr(i, 1));
+        }
+
+        // Add I2 into x2 from the last - i index
+        for (size_t i = 0; i < I2.size(); i++) {
+            x2[x2.size() - I2.size() + i] = stoi(I2.substr(i, 1));
+        }
+    } else if (longerInt == 2) {  // If I2 is longer
+        // Add I1 into x1 from the last - i index
+        for (size_t i = 0; i < I1.size(); i++) {
+            x1[x1.size() - I1.size() + i] = stoi(I1.substr(i, 1));
+        }
+
+        // Add in reverse the characters in I2 as numerals into x2
+        for (size_t i = 0; i < n; i++) {
+            x2[i] = stoi(I2.substr(i, 1));
+        }
+    }
+
+    {  // Print out vectors to check if filled correctly.
+        cout << endl;
+        cout << "Filled Vectors" << endl
+             << "==========================" << endl;
+        cout << "x1: ";
+        printVector(x1);
+        cout << "x2: ";
+        printVector(x2);
+        cout << "carries: ";
+        printVector(carries);
+        cout << "sumInt: ";
+        printVector(sumInt);
+        cout << "==========================" << endl;
+    }
+
+    // Add x1, x2, and carries into sumInt
+    for (size_t i = n; i > 0; i--) {
+        sumInt[i] = x1[i - 1] + x2[i - 1] + carries[i];
+        if (sumInt[i] >= base) {
+            sumInt[i] -= base;
+            carries[i - 1] = 1;
+        }
+        if (i == 1) {
+            sumInt[i - 1] = carries[i - 1];
+        }
+    }
+
+    {  // Print out vectors to check if filled correctly.
+        cout << endl;
+        cout << "Filled Vectors" << endl
+             << "==========================" << endl;
+        cout << "x1: ";
+        printVector(x1);
+        cout << "x2: ";
+        printVector(x2);
+        cout << "carries: ";
+        printVector(carries);
+        cout << "sumInt: ";
+        printVector(sumInt);
+        cout << "==========================" << endl;
+    }
+
+    int firstNonZeroIndex = 0;
+    // find first non-zero index
+    for (size_t i = 0; i < sumInt.size(); i++) {
+        if (sumInt[i] != 0) {
+            firstNonZeroIndex = i;
+            break;
+        }
+    }
+    // convert sumInt into a string
+    for (size_t i = firstNonZeroIndex; i < sumInt.size(); i++) {
+        sum += to_string(sumInt[i]);
+    }
+
+    return sum;
+};
+
+// string karatsuba() {
+//     string product;
+//     return product;
+// };
+
+int main() {
+    string I1, I2, B;
+    cin >> I1 >> I2 >> B;
+    cout << "Inputs: " << I1 << " " << I2 << " " << B << endl;
+
+    // School Addition
+    string sum = schoolAddition(I1, I2, B);
+
+    // // Karatsuba
+    // string product = karatsuba(I1, I2, B);
+    string product = "0";
+
+    // Ratio
+    string ratio = "0";
+
+    // Print Results
+    cout << "Results: " << sum << " " << product << " " << ratio << endl;
+
+    return 0;
+}

@@ -6,7 +6,8 @@
 
 using namespace std;
 
-string makeString(vector<int> v) {  // Takes a int vector and returns a string
+template <typename T>
+string makeString(vector<T> v) {
     // Get the index of the first non-zero element
     size_t firstNonZero = 0;
     for (size_t i = 0; i < v.size(); i++) {
@@ -25,7 +26,7 @@ string makeString(vector<int> v) {  // Takes a int vector and returns a string
     return s;
 }
 
-vector<int> schoolAddition(vector<int> x1, vector<int> x2, int base, size_t n1, size_t n2, size_t n) {
+void schoolAddition(vector<int> x1, vector<int> x2, int base, size_t n1, size_t n2, size_t n) {
     vector<int> carry, sum;
     for (size_t i = 0; i < n + 1; i++) {  // Zero carry & sum to the size of n + 1 (for the last carry)
         carry.push_back(0);
@@ -52,50 +53,18 @@ vector<int> schoolAddition(vector<int> x1, vector<int> x2, int base, size_t n1, 
     // Reverse the sum
     reverse(sum.begin(), sum.end());
 
-    return sum;
+    // Print the sum
+    string sumString = makeString(sum);
+    cout << sumString << " ";
+
+    return;
 }
 
-vector<int> schoolMultiplication(vector<int> x1, vector<int> x2, int base, size_t n1, size_t n2, size_t n) {
-    vector<int> temp, product, carry;
-    for (size_t i = 0; i < 2 * n; i++) {  // Zero temp & carry to the size of 2*n
-        temp.push_back(0);
-        product.push_back(0);
-        carry.push_back(0);
-    }
+void karatsuba(vector<int> x1, vector<int> x2, int base, size_t n1, size_t n2, size_t n) {
+    string prodString = "0";
+    cout << prodString << " ";
 
-    // Calculate the product
-    for (size_t i = 0; i < n; i++) {
-        for (size_t j = 0; j < n; j++) {  // Multiply x1[i] and x2[j]
-            temp[i + j] = x1[j] * x2[i];
-            if (temp[i + j] >= base) {
-                carry[i + j + 1] = temp[i + j] / base;
-                temp[i + j] = temp[i + j] % base;
-            }
-        }
-
-        // Sum temp and carry, and add it to product
-        temp = schoolAddition(temp, carry, base, temp.size(), carry.size(), temp.size());
-        reverse(temp.begin(), temp.end());
-        temp.pop_back();
-        product = schoolAddition(product, temp, base, product.size(), temp.size(), product.size());
-        reverse(product.begin(), product.end());
-        product.pop_back();
-
-        // Zero temp and carry
-        for (size_t k = 0; k < 2 * n; k++) {
-            temp[k] = 0;
-            carry[k] = 0;
-        }
-    }
-
-    reverse(product.begin(), product.end());
-
-    return product;
-};
-
-vector<int> karatsuba(vector<int> x1, vector<int> x2, int base, size_t n1, size_t n2, size_t n) {
-    vector<int> karatsubaProduct;
-    return karatsubaProduct;
+    return;
 };
 
 int main() {
@@ -141,15 +110,12 @@ int main() {
     reverse(x2.begin(), x2.end());
 
     // School Addition
-    vector<int> sum = schoolAddition(x1, x2, base, n1, n2, n);
-    string sumString = makeString(sum);
-    cout << sumString << " ";
+    schoolAddition(x1, x2, base, n1, n2, n);
 
-    // vector<int> product = schoolMultiplication(x1, x2, base, n1, n2, n);  // School Multiplication
-    vector<int> product = karatsuba(x1, x2, base, n1, n2, n);  // Karatsuba Multiplication
-    string prodString = makeString(product);
-    cout << prodString << " ";
+    // Karatsuba
+    karatsuba(x1, x2, base, n1, n2, n);
 
+    // Ratio
     cout << "0" << endl;
 
     return 0;
