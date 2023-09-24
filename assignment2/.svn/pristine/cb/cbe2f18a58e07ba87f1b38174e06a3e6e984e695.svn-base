@@ -39,7 +39,10 @@ class Node {
     };
 
     // Destructor
-    ~Node(){};
+    ~Node() {  // Delete left and right nodes
+        delete left;
+        delete right;
+    };
 };
 
 // AVL tree class
@@ -192,87 +195,6 @@ class AVL {
         return;
     };
 
-    // Deletion helper function, used to find the node to be deleted
-    Node *BSTremove(Node *currNode, int k) {
-        if (currNode == nullptr) {
-            return nullptr;
-        }
-
-        if (k < currNode->key) {                                            // If k < currNode
-            currNode->left = BSTremove(currNode->left, k);                  // Recursive call on the left child.
-        } else if (k > currNode->key) {                                     // If k > currNode
-            currNode->right = BSTremove(currNode->right, k);                // Recursive call on the right child.
-        } else {                                                            // If k == currNode
-            if (currNode->left == nullptr && currNode->right == nullptr) {  // If currNode is a leaf
-                delete currNode;
-                currNode = nullptr;                  // Set currNode to nullptr
-            } else if (currNode->left == nullptr) {  // If currNode has only a right child
-                Node *temp = currNode;               // Set temp to currNode
-                currNode = currNode->right;          // Set currNode to its right child
-                delete temp;
-            } else if (currNode->right == nullptr) {  // If currNode has only a left child
-                Node *temp = currNode;                // Set temp to currNode
-                currNode = currNode->left;            // Set currNode to its left child
-                delete temp;
-            } else {                          // If currNode has two children, pick the left child to replace currNode
-                Node *temp = currNode->left;  // Set temp to currNode's left child
-
-                // Find the rightmost node of the left subtree
-                while (temp->right != nullptr) {
-                    temp = temp->right;
-                }
-
-                // Replace currNode's key with the rightmost node of the left subtree's key
-                currNode->key = temp->key;
-
-                // Delete the rightmost node of the left subtree
-                currNode->left = BSTremove(currNode->left, temp->key);
-            }
-        }
-
-        return currNode;
-    }
-
-    // Preorder output
-    void preOut(Node *currNode) {
-        if (currNode == nullptr) {
-            return;
-        }
-
-        cout << currNode->key << " ";
-        preOut(currNode->left);
-        preOut(currNode->right);
-
-        return;
-    };
-
-    // Inorder output
-    void inOut(Node *currNode) {
-        if (currNode == nullptr) {
-            return;
-        }
-
-        inOut(currNode->left);
-        cout << currNode->key << " ";
-
-        inOut(currNode->right);
-
-        return;
-    };
-
-    // Postorder output
-    void postOut(Node *currNode) {
-        if (currNode == nullptr) {
-            return;
-        }
-
-        postOut(currNode->left);
-        postOut(currNode->right);
-        cout << currNode->key << " ";
-
-        return;
-    };
-
    public:
     // Default constructor
     AVL() {
@@ -302,53 +224,52 @@ class AVL {
     };
 
     // Deletion function
-    void remove(int k) {
-        // If the tree is empty, do nothing
-        if (root == nullptr) {
-            return;
-        }
+    void remove(int k){
 
-        // If the tree is not empty, find the key and delete if found
-        else {
-            root = BSTremove(root, k);
-        }
-
-        // Now that the node is deleted, check if the tree is balanced, balance if necessary
-        root = balance(root);
-
-        // Adjust the heights of the nodes
-        root = adjustHeights(root, 0);
-
-        return;
     };
 
     // Output functions
-    void preOut() {
-        if (root == nullptr) {
-            cout << "EMPTY" << endl;
-        } else {
-            preOut(root);
+    // Preorder output
+    void preOut(Node *currNode) {
+        if (currNode == nullptr) {
+            return;
         }
+
+        preOut(currNode->left);
+        cout << currNode->key << " ";
+
+        preOut(currNode->right);
+        cout << currNode->key << " ";
     };
 
-    void inOut() {
-        if (root == nullptr) {
-            cout << "EMPTY" << endl;
-        } else {
-            inOut(root);
+    // Inorder output
+    void inOut(Node *currNode) {
+        if (currNode == nullptr) {
+            return;
         }
+
+        inOut(currNode->left);
+        cout << currNode->key << " ";
+        inOut(currNode->right);
+        cout << currNode->key << " ";
     };
 
-    void postOut() {
-        if (root == nullptr) {
-            cout << "EMPTY" << endl;
-        } else {
-            postOut(root);
+    // Postorder output
+    void postOut(Node *currNode) {
+        if (currNode == nullptr) {
+            return;
         }
+
+        postOut(currNode->left);
+        cout << currNode->key << " ";
+        postOut(currNode->right);
+        cout << currNode->key << " ";
     };
 
     // Destructor, using postorder traversal removal of nodes
-    ~AVL(){};
+    ~AVL(){
+
+    };
 };
 
 // Split input into vector of instructions
@@ -379,7 +300,7 @@ int main() {
 
     // Separate input into instructions by spaces
     vector<string> instructions = separateInput(input);
-    // printVector(instructions);  // Print instructions
+    printVector(instructions);  // Print instructions
 
     // Create AVL tree
     AVL tree;
@@ -388,22 +309,18 @@ int main() {
     for (size_t i = 0; i < instructions.size() - 1; i++) {
         if (instructions[i][0] == 'A') {
             int key = stoi(instructions[i].substr(1, instructions[i].size() - 1));
+            cout << "Inserting " << key << endl;
             tree.insert(key);
         } else if (instructions[i][0] == 'D') {
             int key = stoi(instructions[i].substr(1, instructions[i].size() - 1));
+            cout << "Deleting" << key << endl;
             tree.remove(key);
         }
     }
 
     if (instructions[instructions.size() - 1] == "PRE") {
-        // If the last instruction is PRE, print the tree in preorder
-        tree.preOut();
     } else if (instructions[instructions.size() - 1] == "IN") {
-        // If the last instruction is IN, print the tree in inorder
-        tree.inOut();
     } else if (instructions[instructions.size() - 1] == "POST") {
-        // If the last instruction is POST, print the tree in postorder
-        tree.postOut();
     }
 
     return 0;
