@@ -1,0 +1,14 @@
+Parameters:
+1.  `country` - 2D array of presence of roads between cities.
+2.  `build` - 2D array containing cost of building road between city `i` & `j`.
+    - 'A'-'Z':  0-25
+    - 'a'-'z':  26-51
+    - If `i = 2`, `j = 4` & `build[2][4] = 'b'`, then the cost of building between 2 & 4 is 27.
+3.  `destroy` - 2D array containing cost of destroying road between city `i` & `j`.
+    - Represented by same values as `build` 
+
+Design:
+1.  Split the cities into groups. 
+    -   i.e. {0,1,2} are interconnected, {3,4,5} are interconnected.
+    -   {0,1,2} should be put into a vector.
+    -   {3,4,5} should be put into another vector.
