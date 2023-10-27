@@ -12,3 +12,6 @@ Design:
     -   i.e. {0,1,2} are interconnected, {3,4,5} are interconnected.
     -   {0,1,2} should be put into a vector.
     -   {3,4,5} should be put into another vector.
+
+
+011000,101000,110000,000011,000101,000110 ABDFFF,BACFFF,DCAFFF,FFFABD,FFFBAC,FFFDCA ABDFFF,BACFFF,DCAFFF,FFFABD,FFFBAC,FFFDCA
